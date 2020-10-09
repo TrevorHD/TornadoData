@@ -128,9 +128,10 @@ popViewport()
 dev.off()
 
 
+                      
 
 
-##### Visualise occurence and death by tornado strength ---------------------------------------------------
+##### Visualise occurrence and death by tornado strength ---------------------------------------------------
 
 # Function to estimate occurrence and lethality as a function of tornado strength
 scale.stats <- function(data, rank, type){
@@ -294,7 +295,7 @@ tableB_state <- mutate(tableB_state, "Count/Year/Land" = Count/Land/(as.numeric(
                                                              as.numeric(min(tableB$YEAR))))
 
 # Prepare graphics device
-jpeg(filename = "Figure 2.jpeg", width = 2100, height = 750, units = "px")
+jpeg(filename = "Figure 3.jpeg", width = 2100, height = 750, units = "px")
 
 # Create blank page
 grid.newpage()
@@ -400,7 +401,7 @@ tableB_county <- mutate(tableB_county, "Count/Year/Land" = Count/Area/(as.numeri
                                        "Deaths/Count" = Deaths/Count)
 
 # Prepare graphics device
-jpeg(filename = "Figure 3.jpeg", width = 2100, height = 750, units = "px")
+jpeg(filename = "Figure 4.jpeg", width = 2100, height = 750, units = "px")
 
 # Create blank page
 grid.newpage()
@@ -466,7 +467,7 @@ remove(layer_c, layer_s)
 ##### Plot all tornado events on map ----------------------------------------------------------------------
 
 # Prepare graphics device
-jpeg(filename = "Figure 4.jpeg", width = 1600, height = 950, units = "px")
+jpeg(filename = "Figure 5.jpeg", width = 1600, height = 950, units = "px")
 
 # Create blank page
 grid.newpage()
