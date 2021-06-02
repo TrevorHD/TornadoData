@@ -7,6 +7,8 @@ An exploration of tornadoes in the United States, using 1950-2011 data from the 
 
 ## Scripts
 
+**DBQueries** *(.sql)* - SQL queries used to create a table of tornado event data, as well as some additional example queries that are not used in the analyses.
+
 **Tornadoes** *(.R)* - All of the code used to analyse the tornado data. **Note**: because the database is so large, the file for it is not included in this repository. If you would like to know how to get the data, please contact me.
 
 ## Figures
