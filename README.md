@@ -1,4 +1,5 @@
 # Overview
+
 An exploration of tornadoes in the United States, using 1950-2011 data from the NOAA Storm Events Database. This work is inspired by a project from a data science class a few years ago and is mostly focused on visualising the data.
 
 <br/>
@@ -15,18 +16,22 @@ An exploration of tornadoes in the United States, using 1950-2011 data from the 
 
 **Figure1** *(.jpeg)* - Plots showing data on tornado movement directions. The vast majority of tornadoes move either east or northeast. Local maxima tend to occur at cardinal and intermediate directions, suggesting that movement may be reported at low resolution when more precise movement data cannot be obtained.
 
-**Figure3** *(.jpeg)* - Plots showing state-level mean number of tornadoes per year (with and without adjustment for land area).
+**Figure3** *(.jpeg)* - Plots showing state-level mean number of tornadoes per year (with and without adjustment for land area, respectively).
 
-**Figure4** *(.jpeg)* - Plots showing county-level mean number of tornadoes per year (with and without adjustment for land area).
+**Figure4** *(.jpeg)* - Plots showing county-level mean number of tornadoes per year (with and without adjustment for land area, respectively).
 
 **Figure5** *(.jpeg)* - Plot showing all reported tornado events from 1950-2011, with each dot representing one event.
 
-<br/><br/>
+<br/>
 
-![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure1.jpeg)
+# Featured Images
 
-![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure3.jpeg)
+Noteworthy or interesting plots, images, figures, and other graphical outputs from the code are included below.
 
-![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure4.jpeg)
+<kbd>![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure1.jpeg)</kbd>
 
-![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure5.jpeg)
+<kbd>![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure3.jpeg)</kbd>
+
+<kbd>![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure4.jpeg)</kbd>
+
+<kbd>![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure5.jpeg)</kbd>
