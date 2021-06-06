@@ -30,6 +30,48 @@ ALTER TABLE TornadoDetails
 	DROP COLUMN END_AZIMUTH,
 	DROP COLUMN END_LOCATION
 	
+	
+	
+	
+	
+/* Create table of only tornado identifiers with locations, deaths, and damage ------------------------- */
+
+/* Create the table with locations, deaths, and damage */
+CREATE TABLE TornadoDamages AS
+	SELECT STATE,
+		   BEGIN_DATE_TIME,
+		   END_DATE_TIME,
+		   INJURIES_DIRECT,
+		   INJURIES_INDIRECT,
+		   DEATHS_DIRECT,
+		   DEATHS_INDIRECT,
+		   DAMAGE_PROPERTY,
+		   DAMAGE_CROPS,
+		   TOR_F_SCALE,
+		   BEGIN_LAT,
+		   BEGIN_LON,
+		   END_LAT,
+		   END_LON
+	FROM StormEvents
+	WHERE EVENT_TYPE = "Tornado"	
+
+/* Add columns for total deaths and injuries */
+ALTER TABLE TornadoDamages
+	ADD COLUMN DEATHS_TOTAL INT NOT NULL,
+	ADD COLUMN INJURIES_TOTAL INT NOT NULL
+
+/* Populate new columns with totals */
+UPDATE TornadoDamages
+	SET DEATHS_TOTAL = DEATHS_DIRECT + DEATHS_INDIRECT,
+	    INJURIES_TOTAL = INJURIES_DIRECT + INJURIES_INDIRECT
+	
+/* Drop indirect/direct death and injury columns */
+ALTER TABLE TornadoDamages	
+	DROP COLUMN DEATHS_DIRECT,
+	DROP COLUMN DEATHS_INDIRECT,
+	DROP COLUMN INJURIES_DIRECT,
+	DROP COLUMN INJURIES_INDIRECT,
+
 
 
 
