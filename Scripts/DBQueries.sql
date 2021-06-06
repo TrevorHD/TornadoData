@@ -76,6 +76,96 @@ ALTER TABLE TornadoDamages
 
 
 
+/* Queries on tornado counts, deaths, and injuries by month, year, and state --------------------------- */
+
+/* Get list of total tornado injuries and deaths by month */
+/* Then sort list in descending order by direct deaths */
+SELECT DISTINCT MONTH_NAME,
+	   SUM(DEATHS_DIRECT),
+	   SUM(DEATHS_INDIRECT),
+	   SUM(INJURIES_DIRECT),
+	   SUM(INJURIES_INDIRECT)
+	FROM StormDetails
+	WHERE EVENT_TYPE = "Tornado"
+	GROUP BY MONTH_NAME
+	ORDER BY 2 DESC
+	
+/* Get list of number of tornadoes by month */
+/* Then sort list in descending order by count */
+SELECT MONTH_NAME,
+	   COUNT(MONTH_NAME)
+	FROM StormDetails
+	WHERE EVENT_TYPE = "Tornado"
+	GROUP BY MONTH_NAME
+	ORDER BY 2 DESC
+
+/* Get list of total tornado injuries and deaths by year */
+/* Then sort list in descending order by direct deaths */
+SELECT DISTINCT YEAR,
+	   SUM(DEATHS_DIRECT),
+	   SUM(DEATHS_INDIRECT),
+	   SUM(INJURIES_DIRECT),
+	   SUM(INJURIES_INDIRECT)
+	FROM StormDetails
+	WHERE EVENT_TYPE = "Tornado"
+	GROUP BY YEAR
+	ORDER BY 2 DESC
+	
+/* Get list of number of tornadoes by year */
+/* Then sort list in descending order by count */	
+SELECT YEAR,
+       COUNT(YEAR)
+	FROM StormDetails
+	WHERE EVENT_TYPE = "Tornado"
+	GROUP BY YEAR
+	ORDER BY 2 DESC
+	
+/* Get list of total tornado injuries and deaths by state */
+/* Then sort list in descending order by direct deaths */
+SELECT DISTINCT STATE,
+       SUM(DEATHS_DIRECT),
+	   SUM(DEATHS_INDIRECT),
+	   SUM(INJURIES_DIRECT),
+	   SUM(INJURIES_INDIRECT)
+	FROM StormDetails
+	WHERE EVENT_TYPE = "Tornado"
+	GROUP BY STATE
+	ORDER BY 2 DESC
+	
+/* Get list of number of tornadoes by state */	
+/* Then sort list in descending order by count */
+SELECT STATE,
+       COUNT(STATE)
+	FROM StormDetails
+	WHERE EVENT_TYPE = "Tornado"
+	GROUP BY STATE
+	ORDER BY 2 DESC
+	
+/* Get list of total tornado injuries and deaths by county */
+/* Then sort list in descending order by direct deaths */
+SELECT DISTINCT CZ_NAME, STATE,
+       SUM(DEATHS_DIRECT),
+	   SUM(DEATHS_INDIRECT),
+	   SUM(INJURIES_DIRECT),
+	   SUM(INJURIES_INDIRECT)
+	FROM StormDetails
+	WHERE EVENT_TYPE = "Tornado"
+	GROUP BY CZ_NAME, STATE
+	ORDER BY 3 DESC
+	
+/* Get list of number of tornadoes by county */	
+/* Then sort list in descending order by count */
+SELECT CZ_NAME, STATE,
+       COUNT(CZ_NAME, STATE)
+	FROM StormDetails
+	WHERE EVENT_TYPE = "Tornado"
+	GROUP BY CZ_NAME, STATE
+	ORDER BY 3 DESC
+
+
+
+
+
 /* Other possible queries ------------------------------------------------------------------------------ */
 
 /* Here are some examples of other queries we can make on the database */
@@ -96,6 +186,11 @@ SELECT *
 	WHERE EVENT_TYPE = "Winter Weather"
 		  AND NOT (MONTH_NAME = "December" OR MONTH_NAME = "January" OR MONTH_NAME = "February")
 		  
+/* Get list of events in which there was at least one death */
+SELECT *
+	FROM StormEvents
+	WHERE (DEATHS_DIRECT + DEATHS_INDIRECT) > 0
+
 /* Get list of May tornadoes in Texas between 2001 and 2011 */
 SELECT *
 	FROM StormEvents
@@ -103,12 +198,7 @@ SELECT *
 		  AND STATE = "TEXAS"
 		  AND MONTH_NAME = "May"
 		  AND YEAR BETWEEN 2001 AND 2011
-		  
-/* Get list of events in which there was at least one death */
-SELECT *
-	FROM StormEvents
-	WHERE (DEATHS_DIRECT + DEATHS_INDIRECT) > 0
-	
+
 /* Get list of F5 tornadoes at least one death */
 SELECT *
 	FROM StormEvents
