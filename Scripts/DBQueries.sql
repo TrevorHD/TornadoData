@@ -39,6 +39,7 @@ ALTER TABLE TornadoDetails
 /* Create the table with locations, deaths, and damage */
 CREATE TABLE TornadoDamages AS
 	SELECT STATE,
+		   CZ_NAME,
 		   BEGIN_DATE_TIME,
 		   END_DATE_TIME,
 		   INJURIES_DIRECT,
@@ -70,9 +71,44 @@ ALTER TABLE TornadoDamages
 	DROP COLUMN DEATHS_DIRECT,
 	DROP COLUMN DEATHS_INDIRECT,
 	DROP COLUMN INJURIES_DIRECT,
-	DROP COLUMN INJURIES_INDIRECT,
+	DROP COLUMN INJURIES_INDIRECT
 
 
+
+
+
+/* Create table of tornado movement patterns ----------------------------------------------------------- */
+
+/* Create the table with locations details */
+CREATE TABLE TornadoMovement AS
+	SELECT STATE,
+	       CZ_NAME
+		   BEGIN_DATE_TIME,
+		   END_DATE_TIME,
+		   TOR_F_SCALE,
+		   BEGIN_LAT,
+		   BEGIN_LON,
+		   END_LAT,
+		   END_LON
+	FROM StormEvents
+	WHERE EVENT_TYPE = "Tornado"
+
+/* Add columns for change in latitude and longitude, and distance */
+ALTER TABLE TornadoMovement
+	ADD COLUMN DELTA_LAT INT NOT NULL,
+	ADD COLUMN DELTA_LON INT NOT NULL,
+	ADD COLUMN DIST INT NOT NULL
+	
+/* Populate new columns with change in latitude and longitude */
+UPDATE TornadoMovement
+	SET DELTA_LAT = END_LAT - BEGIN_LAT,
+	    DELTA_LON = END_LON - BEGIN_LON
+		
+/* Then populate new columns with distance */
+UPDATE TornadoMovement
+	SET DIST = SQRT(POWER(DELTA_LAT, 2) + POWER(DELTA_LON, 2))
+	
+	
 
 
 
@@ -156,7 +192,7 @@ SELECT DISTINCT CZ_NAME, STATE,
 /* Get list of number of tornadoes by county */	
 /* Then sort list in descending order by count */
 SELECT CZ_NAME, STATE,
-       COUNT(CZ_NAME, STATE)
+       COUNT(CZ_NAME)
 	FROM StormDetails
 	WHERE EVENT_TYPE = "Tornado"
 	GROUP BY CZ_NAME, STATE
@@ -173,6 +209,20 @@ SELECT CZ_NAME, STATE,
 /* Get list of distinct storm event types */
 SELECT DISTINCT EVENT_TYPE
 	FROM StormEvents
+	
+/* Get list of number of events by county */	
+/* Then sort list in descending order by count */
+SELECT CZ_NAME, STATE,
+       COUNT(CZ_NAME)
+	FROM StormDetails
+	GROUP BY CZ_NAME, STATE
+	ORDER BY 3 DESC
+	
+/* Get list of number of instances of each event by county */
+SELECT CZ_NAME, STATE, EVENT_TYPE,
+       COUNT(CZ_NAME)
+	FROM StormDetails
+	GROUP BY CZ_NAME, STATE, EVENT_TYPE
 	
 /* Get list of events that occur everywhere but Texas and California, during April and May */
 SELECT *
@@ -205,4 +255,10 @@ SELECT *
 	WHERE EVENT_TYPE = "Tornado"
 		  AND (DEATHS_DIRECT + DEATHS_INDIRECT) > 0
 		  AND (TOR_F_SCale = "F5" OR TOR_F_SCale = "EF5")
+
+/* Get counts of tornado strength for each state */
+SELECT STATE, TOR_F_SCALE,
+       COUNT(TOR_F_SCALE)
+	FROM StormDetails
+	GROUP BY STATE, TOR_F_SCALE
 
