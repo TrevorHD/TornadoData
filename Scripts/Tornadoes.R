@@ -188,22 +188,28 @@ tableB_StatsEF <- data.frame(cbind(labels.ef, tableB_StatsEF))
 names(tableB_StatsEF) <- c("Strength", "Count", "TotalDeaths", "MeanDeaths", "SEDeaths")
 
 # Create plotting function
-plot.statsEF <- function(data, yvar, yvarName){
+plot.statsEF <- function(data, yvar, yvarName, upper){
   
   # Create base plot
   ggplot(data) +
     geom_bar(aes(x = Strength, y = yvar), stat = "identity") +
-    coord_cartesian(ylim = c(0, max(yvar)*1.25)) +
+    coord_cartesian(ylim = c(0, upper)) +
     xlab("Tornado Strength") +
+    scale_y_continuous(breaks = seq(0, upper, length.out = 5)) +
+    theme_bw() +
     theme(panel.grid.major.x = element_blank(),
           panel.grid.major.y = element_line(),
           panel.grid.minor.x = element_blank(),
-          panel.grid.minor.y = element_line()) -> p
+          panel.grid.minor.y = element_line(),
+          axis.title.x = element_text(size = 18),
+          axis.title.y = element_text(size = 18),
+          axis.text.x = element_text(size = 14),
+          axis.text.y = element_text(size = 14)) -> p
   
   # Add additional options to plot based on data type
   if(yvarName == "Count"){
     p + ylab("Total Number of Tornadoes") -> p}
-   if(yvarName == "TotalDeaths"){
+  if(yvarName == "TotalDeaths"){
     p + ylab("Total Number of Deaths") -> p}
   if(yvarName == "MeanDeaths"){
     p + ylab("Mean Deaths Per Tornado") +
@@ -214,29 +220,44 @@ plot.statsEF <- function(data, yvar, yvarName){
   return(p)}
 
 # Prepare graphics device
-jpeg(filename = "Figure 2.jpeg", width = 1800, height = 1200, units = "px")
+jpeg(filename = "Figure 2.1.jpeg", width = 1800, height = 600, units = "px")
 
 # Create blank page
 grid.newpage()
 plot.new()
 
 # Set grid layout and activate it
-gly <- grid.layout(1200, 1800)
+gly <- grid.layout(600, 1800)
 pushViewport(viewport(layout = gly))
 
-print(plot.statsEF(tableB_StatsF, tableB_StatsF$Count, "Count"),
-      vp = viewport(layout.pos.row = 1:600, layout.pos.col = 1:600))
-print(plot.statsEF(tableB_StatsF, tableB_StatsF$TotalDeaths, "TotalDeaths"),
-      vp = viewport(layout.pos.row = 1:600, layout.pos.col = 601:1200))
-print(plot.statsEF(tableB_StatsF, tableB_StatsF$MeanDeaths, "MeanDeaths"),
-      vp = viewport(layout.pos.row = 1:600, layout.pos.col = 1201:1800))
+print(plot.statsEF(tableB_StatsF, tableB_StatsF$Count, "Count", 25000),
+      vp = viewport(layout.pos.row = 21:580, layout.pos.col = 21:590))
+print(plot.statsEF(tableB_StatsF, tableB_StatsF$TotalDeaths, "TotalDeaths", 2500),
+      vp = viewport(layout.pos.row = 21:580, layout.pos.col = 611:1190))
+print(plot.statsEF(tableB_StatsF, tableB_StatsF$MeanDeaths, "MeanDeaths", 12),
+      vp = viewport(layout.pos.row = 21:580, layout.pos.col = 1211:1780))
 
-print(plot.statsEF(tableB_StatsEF, tableB_StatsEF$Count, "Count"),
-      vp = viewport(layout.pos.row = 601:1200, layout.pos.col = 1:600))
-print(plot.statsEF(tableB_StatsEF, tableB_StatsEF$TotalDeaths, "TotalDeaths"),
-      vp = viewport(layout.pos.row = 601:1200, layout.pos.col = 601:1200))
-print(plot.statsEF(tableB_StatsEF, tableB_StatsEF$MeanDeaths, "MeanDeaths"),
-      vp = viewport(layout.pos.row = 601:1200, layout.pos.col = 1201:1800))
+# Deactivate grid layout; finalise graphics save
+popViewport()
+dev.off()
+
+# Prepare graphics device
+jpeg(filename = "Figure 2.2.jpeg", width = 1800, height = 600, units = "px")
+
+# Create blank page
+grid.newpage()
+plot.new()
+
+# Set grid layout and activate it
+gly <- grid.layout(600, 1800)
+pushViewport(viewport(layout = gly))
+
+print(plot.statsEF(tableB_StatsEF, tableB_StatsEF$Count, "Count", 4000),
+      vp = viewport(layout.pos.row = 21:580, layout.pos.col = 21:590))
+print(plot.statsEF(tableB_StatsEF, tableB_StatsEF$TotalDeaths, "TotalDeaths", 200),
+      vp = viewport(layout.pos.row = 21:580, layout.pos.col = 611:1190))
+print(plot.statsEF(tableB_StatsEF, tableB_StatsEF$MeanDeaths, "MeanDeaths", 12),
+      vp = viewport(layout.pos.row = 21:580, layout.pos.col = 1211:1780))
 
 # Deactivate grid layout; finalise graphics save
 popViewport()
