@@ -16,6 +16,10 @@ An exploration of tornadoes in the United States, using 1950-2011 data from the 
 
 **Figure1** *(.jpeg)* - Plots showing data on tornado movement directions. The vast majority of tornadoes move either east or northeast. Local maxima tend to occur at cardinal and intermediate directions, suggesting that movement may be reported at low resolution when more precise movement data cannot be obtained.
 
+**Figure2.1** *(.jpeg)* - Plots of total number of tornadoes, total number of deaths, and mean deaths per tornado for tornadoes scaled on the Fujita scale (F0-F5).
+
+**Figure2.2** *(.jpeg)* - Plots of total number of tornadoes, total number of deaths, and mean deaths per tornado for tornadoes scaled on the enhanced Fujita scale (EF0-EF5).
+
 **Figure3** *(.jpeg)* - Plots showing state-level mean number of tornadoes per year (with and without adjustment for land area, respectively).
 
 **Figure4** *(.jpeg)* - Plots showing county-level mean number of tornadoes per year (with and without adjustment for land area, respectively).
