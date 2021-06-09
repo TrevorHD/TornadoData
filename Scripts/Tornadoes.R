@@ -16,7 +16,7 @@ library(xlsx)
 ##### Load database ---------------------------------------------------------------------------------------
 
 # Begin connection to database
-CN <- dbConnect(SQLite(), dbname = "C:\\Users/Trevor Drees/Desktop/StormEvents.db")
+CN <- dbConnect(SQLite(), dbname = "D:/StormData/DB/StormEvents.db")
 
 # Select tornado events
 results <- dbSendQuery(conn = CN, "SELECT * FROM TornadoDetails
@@ -167,28 +167,24 @@ unique(tableB$TOR_F_SCALE)
 tableB_ScaleF <- subset(tableB, grepl("E", TOR_F_SCALE) == FALSE & TOR_F_SCALE != "")
 tableB_ScaleEF <- subset(tableB, grepl("E", TOR_F_SCALE) == TRUE)
 
+# Set up character vector of F and EF labels
+labels.f <- c("F0", "F1", "F2", "F3", "F4", "F5")
+labels.ef <- c("EF0", "EF1", "EF2", "EF3", "EF4", "EF5")
+
 # Calculate total and mean number of deaths for each F tornado strength
-tableB_StatsF <- data.frame(sapply(c("F0", "F1", "F2", "F3", "F4", "F5"), scale.stats,
-                                     data = tableB_ScaleF, type = "count"),
-                            sapply(c("F0", "F1", "F2", "F3", "F4", "F5"), scale.stats,
-                                     data = tableB_ScaleF, type = "deaths"),
-                            sapply(c("F0", "F1", "F2", "F3", "F4", "F5"), scale.stats,
-                                     data = tableB_ScaleF, type = "meanD"),
-                            sapply(c("F0", "F1", "F2", "F3", "F4", "F5"), scale.stats,
-                                     data = tableB_ScaleF, type = "seD"))
-tableB_StatsF <- data.frame(cbind(c("F0", "F1", "F2", "F3", "F4", "F5"), tableB_StatsF))
+tableB_StatsF <- data.frame(sapply(labels.f, scale.stats, data = tableB_ScaleF, type = "count"),
+                            sapply(labels.f, scale.stats, data = tableB_ScaleF, type = "deaths"),
+                            sapply(labels.f, scale.stats, data = tableB_ScaleF, type = "meanD"),
+                            sapply(labels.f, scale.stats, data = tableB_ScaleF, type = "seD"))
+tableB_StatsF <- data.frame(cbind(labels.f, tableB_StatsF))
 names(tableB_StatsF) <- c("Strength", "Count", "TotalDeaths", "MeanDeaths", "SEDeaths")
 
 # Calculate total and mean number of deaths for each EF tornado strength
-tableB_StatsEF <- data.frame(sapply(c("EF0", "EF1", "EF2", "EF3", "EF4", "EF5"), scale.stats,
-                                     data = tableB_ScaleEF, type = "count"),
-                             sapply(c("EF0", "EF1", "EF2", "EF3", "EF4", "EF5"), scale.stats,
-                                     data = tableB_ScaleEF, type = "deaths"),
-                             sapply(c("EF0", "EF1", "EF2", "EF3", "EF4", "EF5"), scale.stats,
-                                     data = tableB_ScaleEF, type = "meanD"),
-                             sapply(c("EF0", "EF1", "EF2", "EF3", "EF4", "EF5"), scale.stats,
-                                     data = tableB_ScaleEF, type = "seD"))
-tableB_StatsEF <- data.frame(cbind(c("EF0", "EF1", "EF2", "EF3", "EF4", "EF5"), tableB_StatsEF))
+tableB_StatsEF <- data.frame(sapply(labels.ef, scale.stats, data = tableB_ScaleEF, type = "count"),
+                             sapply(labels.ef, scale.stats, data = tableB_ScaleEF, type = "deaths"),
+                             sapply(labels.ef, scale.stats, data = tableB_ScaleEF, type = "meanD"),
+                             sapply(labels.ef, scale.stats, data = tableB_ScaleEF, type = "seD"))
+tableB_StatsEF <- data.frame(cbind(labels.ef, tableB_StatsEF))
 names(tableB_StatsEF) <- c("Strength", "Count", "TotalDeaths", "MeanDeaths", "SEDeaths")
 
 # Create plotting function
@@ -217,9 +213,34 @@ plot.statsEF <- function(data, yvar, yvarName){
   # Output plot
   return(p)}
 
-# Plots on tornado counts, death counts, and mean deaths per tornado for F
-# Plots on tornado counts, death counts, and mean deaths per tornado for EF
-# This part is WIP
+# Prepare graphics device
+jpeg(filename = "Figure 2.jpeg", width = 1800, height = 1200, units = "px")
+
+# Create blank page
+grid.newpage()
+plot.new()
+
+# Set grid layout and activate it
+gly <- grid.layout(1200, 1800)
+pushViewport(viewport(layout = gly))
+
+print(plot.statsEF(tableB_StatsF, tableB_StatsF$Count, "Count"),
+      vp = viewport(layout.pos.row = 1:600, layout.pos.col = 1:600))
+print(plot.statsEF(tableB_StatsF, tableB_StatsF$TotalDeaths, "TotalDeaths"),
+      vp = viewport(layout.pos.row = 1:600, layout.pos.col = 601:1200))
+print(plot.statsEF(tableB_StatsF, tableB_StatsF$MeanDeaths, "MeanDeaths"),
+      vp = viewport(layout.pos.row = 1:600, layout.pos.col = 1201:1800))
+
+print(plot.statsEF(tableB_StatsEF, tableB_StatsEF$Count, "Count"),
+      vp = viewport(layout.pos.row = 601:1200, layout.pos.col = 1:600))
+print(plot.statsEF(tableB_StatsEF, tableB_StatsEF$TotalDeaths, "TotalDeaths"),
+      vp = viewport(layout.pos.row = 601:1200, layout.pos.col = 601:1200))
+print(plot.statsEF(tableB_StatsEF, tableB_StatsEF$MeanDeaths, "MeanDeaths"),
+      vp = viewport(layout.pos.row = 601:1200, layout.pos.col = 1201:1800))
+
+# Deactivate grid layout; finalise graphics save
+popViewport()
+dev.off()
 
 
 
