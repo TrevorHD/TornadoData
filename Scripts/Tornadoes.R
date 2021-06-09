@@ -3,6 +3,8 @@
 # Load libraries
 library(RSQLite)
 library(tidyverse)
+library(gganimate)
+library(gifski)
 library(grid)
 library(gridBase)
 library(XML)
@@ -128,7 +130,7 @@ popViewport()
 dev.off()
 
 
-                      
+
 
 
 ##### Visualise occurrence and death by tornado strength ---------------------------------------------------
@@ -314,10 +316,10 @@ tableB_state$state <- sapply(tableB_state$state, first.cap)
 
 # Download page of land area (sq. km) by state, as HTML
 download.file("https://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_area",
-              destfile = "C:\\Users/Trevor Drees/Documents/test.html")
+              destfile = "D:/Documents/test.html")
 
 # Parse HTML document
-page <- htmlParse("C:\\Users/Trevor Drees/Documents/test.html")
+page <- htmlParse("D:/Documents/test.html")
 
 # Read selected instances of <table> into data frame
 data <- data.frame(readHTMLTable(page, header = TRUE, which = 1))
@@ -423,7 +425,7 @@ tableB_county <- cbind(tableB_fips$STATE, tableB_fips$CZ_NAME, tableB_fips$STATE
 names(tableB_county) <- c("state", "county", "stateFips", "countyFips", "fips", "Count", "Deaths")
 
 # Load census data for land area by county
-data <- read.xlsx("C:\\Users/Trevor Drees/Downloads/LND01.xls", 1)
+data <- read.xlsx("C:/Downloads/LND01.xls", 1)
 data <- subset(data, select = c(STCOU, LND110210D))
 names(data) <- c("fips", "Area")
 
@@ -519,7 +521,7 @@ plot.new()
 gly <- grid.layout(950, 1600)
 pushViewport(viewport(layout = gly))
 
-# Get latitudes of each tornado
+# Get latitude and longitude of each tornado
 # Remove erroneous entries with latitudes or longitudes that make no sense, then transform coordinates
 tableB_coord2 <- subset(tableB, STATE != "PUERTO RICO", select = c(BEGIN_LON, BEGIN_LAT))
 tableB_coord2 <- na.omit(data.frame(apply(X = tableB_coord2, MARGIN = 2, FUN = as.numeric))) %>%
@@ -542,4 +544,99 @@ grid.text(label = "All Reported Tornado Events, 1950 - 2011", x = 0.5, y = 0.95,
 # Deactivate grid layout; finalise graphics save
 popViewport()
 dev.off()
+
+
+
+
+
+##### Plot tornado events on map based on strength --------------------------------------------------------
+
+# Get latitude and longitude of each tornado
+# Remove erroneous entries with latitudes or longitudes that make no sense, then transform coordinates
+tableB_coord2 <- subset(tableB, STATE != "PUERTO RICO", select = c(BEGIN_LON, BEGIN_LAT))
+tableB_coord2 <- na.omit(data.frame(apply(X = tableB_coord2, MARGIN = 2, FUN = as.numeric))) %>%
+  subset(., abs(BEGIN_LON) < 180 & abs(BEGIN_LAT) < 180) %>%
+  usmap_transform(.) -> tableB_coord2
+
+# Remove problematic points where transformations failed, or are likely misreported
+tableB_coord2 <- tableB_coord2[-c(18442, 33741, 34094, 10798, 10793, 4448, 8145, 12959, 3178,
+                                  9746, 10129, 12831, 666, 5236, 2313, 10316, 52438, 52440, 39370), ]
+
+# Re-attach F-scale measurements
+tableB_coord2 <- merge(tableB_coord2, y = subset(tableB, STATE != "PUERTO RICO", select = c(BEGIN_LON, BEGIN_LAT, TOR_F_SCALE)),
+                       by = c("BEGIN_LON", "BEGIN_LAT"))
+
+# Remove blank F-scale factor
+unique(tableB$TOR_F_SCALE)
+tableB_coord2 <- subset(tableB_coord2, TOR_F_SCALE != "")
+
+# Set up list of still figure file names
+namelistF <- paste0("Figure6.1.", 0:5, ".jpeg")
+namelistEF <- paste0("Figure6.2.", 0:5, ".jpeg")
+
+# Plot series of still figures for F-scale
+for(i in 1:length(namelistF)){
+  
+  # Prepare graphics device
+  jpeg(filename = namelistF[i], width = 1600, height = 950, units = "px")
+  
+  # Create blank page
+  grid.newpage()
+  plot.new()
+  
+  # Set grid layout and activate it
+  gly <- grid.layout(950, 1600)
+  pushViewport(viewport(layout = gly))
+  
+  # Plot points and save plot
+  plot_usmap("states", color = "black") +
+    geom_point(data = subset(tableB_coord2, TOR_F_SCALE == labels.f[i]),
+               aes(x = BEGIN_LON.1, y = BEGIN_LAT.1), alpha = 0.12, colour = "red") +
+    scale_shape_manual(values = 19) +
+    theme(plot.margin = unit(c(1.2, 0.01, 0.01, 0.01), "cm")) -> TMap
+  
+  # Print plot
+  print(TMap)
+  
+  # Add title
+  grid.text(label = "All Reported Tornado Events, 1950 - 2011", x = 0.5, y = 0.95, gp = gpar(fontsize = 40))
+  
+  # Add tornado scale indicator
+  grid.text(label = labels.f[i], x = 0.96, y = 0.05, gp = gpar(fontsize = 60))
+  
+  # Finalise graphics save
+  dev.off()}
+
+# Plot series of still figures for EF-scale
+for(i in 1:length(namelistF)){
+  
+  # Prepare graphics device
+  jpeg(filename = namelistEF[i], width = 1600, height = 950, units = "px")
+  
+  # Create blank page
+  grid.newpage()
+  plot.new()
+  
+  # Set grid layout and activate it
+  gly <- grid.layout(950, 1600)
+  pushViewport(viewport(layout = gly))
+  
+  # Plot points and save plot
+  plot_usmap("states", color = "black") +
+    geom_point(data = subset(tableB_coord2, TOR_F_SCALE == labels.ef[i]),
+               aes(x = BEGIN_LON.1, y = BEGIN_LAT.1), alpha = 0.12, colour = "red") +
+    scale_shape_manual(values = 19) +
+    theme(plot.margin = unit(c(1.2, 0.01, 0.01, 0.01), "cm")) -> TMap
+  
+  # Print plot
+  print(TMap)
+  
+  # Add title
+  grid.text(label = "All Reported Tornado Events, 1950 - 2011", x = 0.5, y = 0.95, gp = gpar(fontsize = 40))
+  
+  # Add tornado scale indicator
+  grid.text(label = labels.ef[i], x = 0.96, y = 0.05, gp = gpar(fontsize = 60))
+  
+  # Finalise graphics save
+  dev.off()}
 
