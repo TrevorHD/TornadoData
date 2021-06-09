@@ -69,7 +69,7 @@ tableB_angle <- as.data.frame(na.omit(tableB_angle))
 names(tableB_angle) = "Angle"
 
 # Prepare graphics device
-jpeg(filename = "Figure 1.jpeg", width = 1400, height = 400, units = "px")
+jpeg(filename = "Figure1.jpeg", width = 1400, height = 400, units = "px")
 
 # Create blank page
 grid.newpage()
@@ -220,7 +220,7 @@ plot.statsEF <- function(data, yvar, yvarName, upper){
   return(p)}
 
 # Prepare graphics device
-jpeg(filename = "Figure 2.1.jpeg", width = 1800, height = 600, units = "px")
+jpeg(filename = "Figure2.1.jpeg", width = 1800, height = 600, units = "px")
 
 # Create blank page
 grid.newpage()
@@ -242,7 +242,7 @@ popViewport()
 dev.off()
 
 # Prepare graphics device
-jpeg(filename = "Figure 2.2.jpeg", width = 1800, height = 600, units = "px")
+jpeg(filename = "Figure2.2.jpeg", width = 1800, height = 600, units = "px")
 
 # Create blank page
 grid.newpage()
@@ -337,7 +337,7 @@ tableB_state <- mutate(tableB_state, "Count/Year/Land" = Count/Land/(as.numeric(
                                                              as.numeric(min(tableB$YEAR))))
 
 # Prepare graphics device
-jpeg(filename = "Figure 3.jpeg", width = 2100, height = 750, units = "px")
+jpeg(filename = "Figure3.jpeg", width = 2100, height = 750, units = "px")
 
 # Create blank page
 grid.newpage()
@@ -443,7 +443,7 @@ tableB_county <- mutate(tableB_county, "Count/Year/Land" = Count/Area/(as.numeri
                                        "Deaths/Count" = Deaths/Count)
 
 # Prepare graphics device
-jpeg(filename = "Figure 4.jpeg", width = 2100, height = 750, units = "px")
+jpeg(filename = "Figure4.jpeg", width = 2100, height = 750, units = "px")
 
 # Create blank page
 grid.newpage()
@@ -509,7 +509,7 @@ remove(layer_c, layer_s)
 ##### Plot all tornado events on map ----------------------------------------------------------------------
 
 # Prepare graphics device
-jpeg(filename = "Figure 5.jpeg", width = 1600, height = 950, units = "px")
+jpeg(filename = "Figure5.jpeg", width = 1600, height = 950, units = "px")
 
 # Create blank page
 grid.newpage()
