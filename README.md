@@ -26,6 +26,14 @@ An exploration of tornadoes in the United States, using 1950-2011 data from the 
 
 **Figure5** *(.jpeg)* - Plot showing all reported tornado events from 1950-2011, with each dot representing one event.
 
+**Figure6.1** *(.gif)* - Plot showing all reported tornado events from 1950-2011 based on F-scale ranking, with each dot representing one event.
+
+**Figure6.1.X** *(.png)* - Still images used to create the GIF in the previously-listed figure.
+
+**Figure6.2** *(.gif)* - Plot showing all reported tornado events from 1950-2011 based on EF-scale ranking, with each dot representing one event.
+
+**Figure6.2.X** *(.png)* - Still images used to create the GIF in the previously-listed figure.
+
 <br/>
 
 # Featured Images
@@ -39,3 +47,5 @@ Noteworthy or interesting plots, images, figures, and other graphical outputs fr
 <kbd>![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure4.jpeg)</kbd>
 
 <kbd>![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure5.jpeg)</kbd>
+
+<kbd>![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure6.1.gif)</kbd>
