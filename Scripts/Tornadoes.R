@@ -3,7 +3,6 @@
 # Load libraries
 library(RSQLite)
 library(tidyverse)
-library(gganimate)
 library(gifski)
 library(grid)
 library(gridBase)
@@ -571,14 +570,14 @@ unique(tableB$TOR_F_SCALE)
 tableB_coord2 <- subset(tableB_coord2, TOR_F_SCALE != "")
 
 # Set up list of still figure file names
-namelistF <- paste0("Figure6.1.", 0:5, ".jpeg")
-namelistEF <- paste0("Figure6.2.", 0:5, ".jpeg")
+namelistF <- paste0("Figure6.1.", 0:5, ".png")
+namelistEF <- paste0("Figure6.2.", 0:5, ".png")
 
 # Plot series of still figures for F-scale
 for(i in 1:length(namelistF)){
   
   # Prepare graphics device
-  jpeg(filename = namelistF[i], width = 1600, height = 950, units = "px")
+  png(filename = namelistF[i], width = 1600, height = 950, units = "px")
   
   # Create blank page
   grid.newpage()
@@ -611,7 +610,7 @@ for(i in 1:length(namelistF)){
 for(i in 1:length(namelistF)){
   
   # Prepare graphics device
-  jpeg(filename = namelistEF[i], width = 1600, height = 950, units = "px")
+  png(filename = namelistEF[i], width = 1600, height = 950, units = "px")
   
   # Create blank page
   grid.newpage()
@@ -639,4 +638,12 @@ for(i in 1:length(namelistF)){
   
   # Finalise graphics save
   dev.off()}
+
+# Save all F-scale stills as GIF
+gifski(paste0("Figures/Figure6.1/", c(namelistF, rep(namelistF[6], 3))),
+       "Figure6.1.gif", width = 1600, height = 950, delay = 1)
+
+# Save all EF-scale stills as GIF
+gifski(paste0("Figures/Figure6.2/", c(namelistEF, rep(namelistEF[6], 3))),
+       "Figure6.2.gif", width = 1600, height = 950, delay = 1)
 
