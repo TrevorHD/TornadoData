@@ -533,7 +533,7 @@ tableB_coord2 <- tableB_coord2[-c(18442, 33741, 34094, 10798, 10793, 4448, 8145,
 
 # Plot points
 plot_usmap("states", color = "black") +
-  geom_point(data = tableB_coord2, aes(x = BEGIN_LON.1, y = BEGIN_LAT.1), alpha = 0.05, colour = "red") +
+  geom_point(data = tableB_coord2, aes(x = BEGIN_LON.1, y = BEGIN_LAT.1), alpha = 0.08, colour = "red") +
   scale_shape_manual(values = 19) +
   theme(plot.margin = unit(c(1.2, 0.01, 0.01, 0.01), "cm"))
 
