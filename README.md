@@ -14,7 +14,7 @@ An exploration of tornadoes in the United States, using 1950-2011 data from the 
 
 ## Figures
 
-**Figure1** *(.jpeg)* - Plots showing data on tornado movement directions. The vast majority of tornadoes move either east or northeast. Local maxima tend to occur at cardinal and intermediate directions, suggesting that movement may be reported at low resolution when more precise movement data cannot be obtained.
+**Figure1** *(.jpeg)* - Plots showing data on tornado movement directions.
 
 **Figure2.1** *(.jpeg)* - Plots of total number of tornadoes, total number of deaths, and mean deaths per tornado for tornadoes scaled on the Fujita scale (F0-F5).
 
@@ -38,14 +38,20 @@ An exploration of tornadoes in the United States, using 1950-2011 data from the 
 
 # Featured Images
 
-Noteworthy or interesting plots, images, figures, and other graphical outputs from the code are included below.
+Plot of tornado movement directions. The vast majority of tornadoes move either east or northeast; local maxima tend to occur at cardinal and intermediate directions, suggesting that movement may be reported at low resolution when more precise movement data cannot be obtained.
 
 <kbd>![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure1.jpeg)</kbd>
+
+Plots of mean annual tornado counts at the state and county levels; the left plots do not take into account the land area of each state or county, while the right plots do.
 
 <kbd>![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure3.jpeg)</kbd>
 
 <kbd>![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure4.jpeg)</kbd>
 
+A plot of all tornado events in the observed time period (1950-2011), with each point representing a single tornado event; note that point size and colour are not scaled by tornado strength.
+
 <kbd>![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure5.jpeg)</kbd>
+
+An animated plot of all tornado events in the observed time period (1950-2011), grouped by strength; note that point size and colour are not scaled by tornado strength.
 
 <kbd>![](https://github.com/TrevorHD/TornadoData/blob/main/Figures/Figure6.1.gif)</kbd>
